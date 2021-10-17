@@ -33,9 +33,11 @@ gender_vals = ['m', 'f']
 
 #### METHODS
 
-def error(valid):
-
-    print(valid, [])
+def error(valid, user_query = []):
+    if valid == False:
+        print(valid, user_query)
+    else:
+        print(valid, user_query)
 
 
 
@@ -110,9 +112,29 @@ def test3(token1, token3, department_vals, gender_vals):
 
     return valid
 
+def transition(token4):
+    global valid
+
+    if token4.lower() == 'and':
+        pass
+
+    elif token4.lower() == 'or':
+        pass
+
+    else:
+        valid = False
+        print('ERROR WITH THE TRANSITION PHRASE')
+        error(valid)
 
 
+def test4():
+    pass
 
+def test5():
+    pass
+
+def test6():
+    pass
 
 
 
@@ -134,6 +156,17 @@ def main(valid_queries, valid_dict, department_vals):
         valid = False
         error(valid)
 
+    if size == 7:
+        token4 = user_query[3]
+        token5 = user_query[4]
+        token6 = user_query[5]
+        token7 = user_query[6]
+
+        if valid and transition(token4) == 'or':
+            pass
+        elif valid and transition(token4) == 'and':
+            pass
+
     token1 = user_query[0]
     token2 = user_query[1]
     token3 = user_query[2]
@@ -146,6 +179,14 @@ def main(valid_queries, valid_dict, department_vals):
 
     if valid and test3(token1, token3, department_vals, gender_vals):
         pass
+
+
+
+
+    else:
+        error(valid, user_query)
+
+
 
 
 main(valid_queries, valid_dict, department_vals)
