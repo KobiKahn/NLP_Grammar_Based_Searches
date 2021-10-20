@@ -29,11 +29,11 @@ department_vals = ['sales', 'software', 'management']
 
 gender_vals = ['m', 'f']
 
-
+is7 = False
 
 #### METHODS
 
-def error(valid, user_query = []):
+def finish(valid, user_query = []):
     if valid == False:
         print(valid, user_query)
     else:
@@ -52,7 +52,7 @@ def test1(token1,valid_queries):
 
     if valid == False:
         print('ERROR WITH YOUR KEY NAME')
-        error(valid)
+        finish(valid)
     return valid
 
 
@@ -75,7 +75,7 @@ def test2(token1, token2, valid_dict):
 
     if valid == False:
         print('ERROR WITH YOUR LOGICAL OPERATOR')
-        error(valid)
+        finish(valid)
 
     return valid
 
@@ -108,7 +108,7 @@ def test3(token1, token3, department_vals, gender_vals):
 
     if valid == False:
         print('ERROR WITH YOUR VALUE FOR THE REFERENCED KEY')
-        error(valid)
+        finish(valid)
 
     return valid
 
@@ -124,24 +124,15 @@ def transition(token4):
     else:
         valid = False
         print('ERROR WITH THE TRANSITION PHRASE')
-        error(valid)
-
-
-def test4():
-    pass
-
-def test5():
-    pass
-
-def test6():
-    pass
-
+        finish(valid)
+    return token4.lower()
 
 
 
 def main(valid_queries, valid_dict, department_vals):
     global valid
     global run
+    global is7
     query = input('Find all records with: ')
 
 
@@ -149,43 +140,52 @@ def main(valid_queries, valid_dict, department_vals):
     size = len(user_query)
 
 
-    if size == 3 or size == 7:
-        pass
-    else:
-        print('ERROR WITH THE LENGTH OF QUERY')
-        valid = False
-        error(valid)
 
     if size == 7:
+        is7 = True
+        token1 = user_query[0]
+        token2 = user_query[1]
+        token3 = user_query[2]
+
         token4 = user_query[3]
+
         token5 = user_query[4]
         token6 = user_query[5]
         token7 = user_query[6]
-
         if valid and transition(token4) == 'or':
-            pass
+            if valid and (test1(token1, valid_queries) or valid and test1(token5, valid_queries)):
+                pass
+            if valid and (test2(token1, token2, valid_dict) or test2(token5, token6, valid_dict)):
+                pass
+            if valid and (test3(token1, token3, department_vals, gender_vals) or test3(token5, token7, department_vals, gender_vals)):
+                finish(valid, user_query)
+
         elif valid and transition(token4) == 'and':
+            if valid and (test1(token1, valid_queries) and test1(token5, valid_queries)):
+                pass
+            if valid and (test2(token1, token2, valid_dict) and test2(token5, token6, valid_dict)):
+                pass
+            if valid and (test3(token1, token3, department_vals, gender_vals) and test3(token5, token7, department_vals, gender_vals)):
+                finish(valid, user_query)
+
+
+    elif size == 3:
+        is7 = False
+        token1 = user_query[0]
+        token2 = user_query[1]
+        token3 = user_query[2]
+
+        if valid and test1(token1, valid_queries):
             pass
-
-    token1 = user_query[0]
-    token2 = user_query[1]
-    token3 = user_query[2]
-
-    if valid and test1(token1, valid_queries):
-        pass
-
-    if valid and test2(token1, token2, valid_dict):
-        pass
-
-    if valid and test3(token1, token3, department_vals, gender_vals):
-        pass
-
-
-
+        if valid and test2(token1, token2, valid_dict):
+            pass
+        if valid and test3(token1, token3, department_vals, gender_vals):
+            finish(valid, user_query)
 
     else:
-        error(valid, user_query)
-
+        print('ERROR WITH THE LENGTH OF QUERY')
+        valid = False
+        finish(valid)
 
 
 
