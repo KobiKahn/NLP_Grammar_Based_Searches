@@ -34,9 +34,6 @@ is7 = False
 #### METHODS
 
 def finish(valid, user_query = []):
-    if valid == False:
-        print(valid, user_query)
-    else:
         print(valid, user_query)
 
 
@@ -50,9 +47,7 @@ def test1(token1,valid_queries):
         else:
             valid = False
 
-    if valid == False:
-        print('ERROR WITH YOUR KEY NAME')
-        finish(valid)
+
     return valid
 
 
@@ -71,11 +66,6 @@ def test2(token1, token2, valid_dict):
 
                 else:
                     valid = False
-
-
-    if valid == False:
-        print('ERROR WITH YOUR LOGICAL OPERATOR')
-        finish(valid)
 
     return valid
 
@@ -106,10 +96,6 @@ def test3(token1, token3, department_vals, gender_vals):
             else:
                 valid = False
 
-    if valid == False:
-        print('ERROR WITH YOUR VALUE FOR THE REFERENCED KEY')
-        finish(valid)
-
     return valid
 
 def transition(token4):
@@ -123,16 +109,16 @@ def transition(token4):
 
     else:
         valid = False
-        print('ERROR WITH THE TRANSITION PHRASE')
-        finish(valid)
+
     return token4.lower()
 
 
 
 def main(valid_queries, valid_dict, department_vals):
     global valid
-    global run
-    global is7
+    counter_or = 0
+    counter_and = 0
+
     query = input('Find all records with: ')
 
 
@@ -140,9 +126,8 @@ def main(valid_queries, valid_dict, department_vals):
     size = len(user_query)
 
 
-
     if size == 7:
-        is7 = True
+
         token1 = user_query[0]
         token2 = user_query[1]
         token3 = user_query[2]
@@ -152,25 +137,35 @@ def main(valid_queries, valid_dict, department_vals):
         token5 = user_query[4]
         token6 = user_query[5]
         token7 = user_query[6]
+
         if valid and transition(token4) == 'or':
-            if valid and (test1(token1, valid_queries) or valid and test1(token5, valid_queries)):
-                pass
-            if valid and (test2(token1, token2, valid_dict) or test2(token5, token6, valid_dict)):
-                pass
-            if valid and (test3(token1, token3, department_vals, gender_vals) or test3(token5, token7, department_vals, gender_vals)):
-                finish(valid, user_query)
+            if test1(token1, valid_queries) or test1(token5, valid_queries):
+                counter_or = 1
+                if test2(token1, token2, valid_dict) or test2(token5, token6, valid_dict):
+                    counter_or = 2
+                    if test3(token1, token3, department_vals, gender_vals) or test3(token5, token7, department_vals,gender_vals):
+                        counter_or = 3
+                        finish(valid, user_query)
+
+            if counter_or != 3:
+                finish(valid)
+
+
 
         elif valid and transition(token4) == 'and':
-            if valid and (test1(token1, valid_queries) and test1(token5, valid_queries)):
-                pass
-            if valid and (test2(token1, token2, valid_dict) and test2(token5, token6, valid_dict)):
-                pass
-            if valid and (test3(token1, token3, department_vals, gender_vals) and test3(token5, token7, department_vals, gender_vals)):
-                finish(valid, user_query)
+            if test1(token1, valid_queries) and test1(token5, valid_queries):
+                counter_and = 1
+                if test2(token1, token2, valid_dict) and test2(token5, token6, valid_dict):
+                    counter_and = 2
+                    if test3(token1, token3, department_vals, gender_vals) and test3(token5, token7,department_vals,gender_vals):
+                        counter_and = 3
+                        finish(valid, user_query)
+
+            if counter_and != 3:
+                finish(valid)
 
 
     elif size == 3:
-        is7 = False
         token1 = user_query[0]
         token2 = user_query[1]
         token3 = user_query[2]
