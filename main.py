@@ -29,7 +29,7 @@ department_vals = ['sales', 'software', 'management']
 
 gender_vals = ['m', 'f']
 
-is7 = False
+
 
 #### METHODS
 
@@ -184,6 +184,16 @@ def main(valid_queries, valid_dict, department_vals):
 
 
 
-main(valid_queries, valid_dict, department_vals)
+# main(valid_queries, valid_dict, department_vals)
 
+
+record = {}
+record['age'] = 55
+token = ['age', '>', '45']
+# query_str = "record["+"'" + token[0] + "'" + "]" + " " + token[1] + ' ' + token[2]
+query_str = f'record[\'{token[0]}\'] {token[1]} {token[2]}'
+print(query_str)
+
+if eval(query_str):
+    print(record)
 
